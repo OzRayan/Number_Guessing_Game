@@ -1,52 +1,52 @@
-# Header prompt, welcome
-
-# Loop till guess correct
-
-# Bigger smaller prompt
-
-# number range for guesses
-
 import random
+import os
 
-
-
-header_prompt = 'Welcome to Number Guessing Game'
-guess = None
-guess_count = []
 range_of_numbers = tuple()
 
 
-def game():
+def clear():
+    return os.system('cls' if os.name == 'nt' else 'clear')
+
+
+def game(guess_count):
     random_number = random.randrange(1, 11)
     guess_count.clear()
-    prompt = 'Your number is {} then my number'
-    choice = ('lower', 'higher')
     while True:
         try:
-            guess = int(input('Enter a number between 1 an 10:'))
-            if guess < random_number:
-                print(prompt.format(choice[0]))
+            guess = int(input('Enter a number between 1 and 10:'))
+            if guess < 1 or guess > 10:
+                clear()
+                print('Your number is not in the range of 1 and 10!')
+            elif guess < random_number:
+                clear()
+                print('Your number is lower then my number')
                 guess_count.append(guess)
             elif guess > random_number:
-                print(prompt.format(choice[1]))
+                clear()
+                print('Your number is higher then my number')
                 guess_count.append(guess)
             else:
-                print("Congratulation! You guessed the number")
+                clear()
+                print("Congratulation! You guessed my number, "
+                      + str(random_number))
+                guess_count.append(guess)
                 break
         except ValueError:
-            print('Please enter a number')
+            print('Please enter a number!')
 
 
-def main():
+def start_game():
     option = None
-    print(header_prompt)
-
+    guess_count = []
+    print('Welcome to Number Guessing Game\n'
+          'Lower score wins. Good luck!')
     while option != 'n':
-        game()
+        game(guess_count)
         score = len(guess_count)
         print('Your score is {}'.format(score))
         option = input('Would you like to continue? [y]es [N]o >').lower()
+        clear()
 
 
 if __name__ == '__main__':
-    main()
+    start_game()
